@@ -374,6 +374,11 @@ public int FourKind (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] 
 }
 public int fullHouse (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] p2DiceHandCurrentValue, int[] p2HoldHandValue, boolean p1Turn, boolean p2Turn, int p1temp, int p2temp) {
 	int fullHouse = 0;
+	for (int i= 1; i <= 6; i++) {
+		for (int a = 0; a <= 5; a++) {
+			
+		}
+	}
 	return fullHouse;
 }
 public int chance (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] p2DiceHandCurrentValue, int[] p2HoldHandValue, boolean p1Turn, boolean p2Turn, int p1temp, int p2temp) {
