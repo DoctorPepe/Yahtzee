@@ -374,11 +374,21 @@ public int FourKind (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] 
 }
 public int fullHouse (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] p2DiceHandCurrentValue, int[] p2HoldHandValue, boolean p1Turn, boolean p2Turn, int p1temp, int p2temp) {
 	int fullHouse = 0;
+	int[] tempTotal = new int[5];
 	for (int i= 1; i <= 6; i++) {
 		for (int a = 0; a <= 5; a++) {
-			
+			if (p1Turn) {
+				if (p1DiceHandCurrentValue[i] == a || p1HoldHandValue[i] == a) {
+					tempTotal[a] = tempTotal[a] + 1;
+				}
+			} else if (p2Turn) {
+				if (p2DiceHandCurrentValue[i] == a || p2HoldHandValue[i] == a) {
+					tempTotal[a] = tempTotal[a] + 1;
+				}
+			}
 		}
 	}
+
 	return fullHouse;
 }
 public int chance (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] p2DiceHandCurrentValue, int[] p2HoldHandValue, boolean p1Turn, boolean p2Turn, int p1temp, int p2temp) {
@@ -424,10 +434,10 @@ public int yahtzee (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] p
 				}
 			}
 		}
-		for (int b=0; b<5; b++) {
-			if (tempTotal[b] == 5) {
-				yahtzeeTotal = 50;
-			}
+	}
+	for (int b=0; b<5; b++) {
+		if (tempTotal[b] == 5) {
+			yahtzeeTotal = 50;
 		}
 	}
 	return yahtzeeTotal;
