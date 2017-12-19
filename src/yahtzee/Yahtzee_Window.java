@@ -388,9 +388,70 @@ public int fullHouse (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[]
 			}
 		}
 	}
-
+	for (int b=1; b <= 5; b++) {
+		if (tempTotal[b] == 3) {
+			int temp = b;
+			for (int c=1; c <= 5; c++) {
+				if (tempTotal[c] != temp && tempTotal[c] == 3) {
+					fullHouse = 25;
+				}
+			}
+		}
+	}
 	return fullHouse;
 }
+public int smallStraight (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] p2DiceHandCurrentValue, int[] p2HoldHandValue, boolean p1Turn, boolean p2Turn, int p1temp, int p2temp) {
+	int smallStraight = 0;
+	int[] tempTotal = new int[6]; //temptotal is the number of each type of dice (i.e 3 ones)
+	for (int i= 1; i <= 6; i++) { //loop though all types of dice
+		for (int a = 0; a <= 5; a++) { //lopp though the current hand and hold hand for each player
+			if (p1Turn) {
+				if (p1DiceHandCurrentValue[a] == i || p1HoldHandValue[a] == i) {
+					tempTotal[i] = tempTotal[i] + 1;
+				}
+			} else if (p2Turn) {
+				if (p2DiceHandCurrentValue[a] == i || p2HoldHandValue[a] == i) {
+					tempTotal[i] = tempTotal[i] + 1;
+				}
+			}
+		}
+	}
+	if (tempTotal[0] == 1 && tempTotal[1] == 1 && tempTotal[2] == 1 && tempTotal[3] == 1) { //check combinations to see is any of them work
+		smallStraight = 30;
+	} else if (tempTotal[1] == 1 && tempTotal[2] == 1 && tempTotal[3] == 1 && tempTotal[4] == 1) {
+		smallStraight = 30;
+	} else if (tempTotal[2] == 1 && tempTotal[3] == 1 && tempTotal[4] == 1 && tempTotal[5] == 1) {
+		smallStraight = 30;
+	} else {
+		smallStraight = 0;
+	}
+	return smallStraight;
+}
+public int largeStraight (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] p2DiceHandCurrentValue, int[] p2HoldHandValue, boolean p1Turn, boolean p2Turn, int p1temp, int p2temp) {
+		int largeStraight = 0;
+		int[] tempTotal = new int[6]; //temptotal is the number of each type of dice (i.e 3 ones)
+		for (int i= 1; i <= 6; i++) { //loop though all types of dice
+			for (int a = 0; a <= 5; a++) { //lopp though the current hand and hold hand for each player
+				if (p1Turn) {
+					if (p1DiceHandCurrentValue[a] == i || p1HoldHandValue[a] == i) {
+						tempTotal[i] = tempTotal[i] + 1;
+					}
+				} else if (p2Turn) {
+					if (p2DiceHandCurrentValue[a] == i || p2HoldHandValue[a] == i) {
+						tempTotal[i] = tempTotal[i] + 1;
+					}
+				}
+			}
+		}
+		if (tempTotal[0] == 1 && tempTotal[1] == 1 && tempTotal[2] == 1 && tempTotal[3] == 1 && tempTotal[4] ==1) {
+			largeStraight = 40;
+		} else if (tempTotal[1] == 1 && tempTotal[2] == 1 && tempTotal[3] ==1 && tempTotal[4] == 1 && tempTotal[5] ==1) {
+			largeStraight = 40;
+		} else {
+			largeStraight = 0;
+		}
+		return largeStraight;
+	}
 public int chance (int[] p1DiceHandCurrentValue, int[] p1HoldHandValue, int[] p2DiceHandCurrentValue, int[] p2HoldHandValue, boolean p1Turn, boolean p2Turn, int p1temp, int p2temp) {
 	int chanceTotal = 0;
 	for (int i=0; i < 5; i++) {
