@@ -206,51 +206,79 @@ public class Yahtzee_Window implements ActionListener, MouseListener {
                 if (b == 31 || b == 48) { //for chance (this one will act as a sample for the rest)
                     int chanceTemp;
                     chanceTemp = chance(); //call the method for that particular score category
-                    score[b].setText(chanceTemp + ""); //set text
+                    if (b == 31 && p1Turn) {
+                        score[31].setText(chanceTemp + ""); //set text
+                    } else if (b == 48 && p2Turn) {
+                        score[48].setText(chanceTemp + "");
+                    }
                     endTurn(e); //end turn
                 }
                 if (b == 32 || b == 49) { //yahtzee
                 	int yahtzeeTemp;
                 	yahtzeeTemp = yahtzee();
-                	score[b].setText(yahtzeeTemp + "");
+                	if (b== 32 && p1Turn) {
+                        score[32].setText(yahtzeeTemp + "");
+                    } else if (b == 49 && p2Turn) {
+                	    score[49].setText(yahtzeeTemp + "");
+                    }
                 	endTurn(e);
 				}
 				if (b == 26 || b ==	43) { //three of a kind
                 	int threeKindTemp;
                 	threeKindTemp = threeKind();
-                	score[b].setText(threeKindTemp + "");
+                	if (b == 26 && p1Turn) {
+                        score[26].setText(threeKindTemp + "");
+                    } else if (b == 43 && p2Turn) {
+                	    score[43].setText(threeKindTemp + "");
+                    }
                 	endTurn(e);
 				}
 				if (b == 27 || b == 44) { //four of a kind
                     int fourKindTemp;
                     fourKindTemp = fourKind();
-                    score[b].setText(fourKindTemp + "");
+                    if (b == 27 && p1Turn) {
+                        score[27].setText(fourKindTemp + "");
+                    } else if (b == 44 && p2Turn) {
+                        score[44].setText(fourKindTemp+ "");
+                    }
                     endTurn(e);
                 }
                 if (b == 28 || b == 45) { //full house
                     int fullHouseTemp;
                     fullHouseTemp = fullHouse();
-                    score[b].setText(fullHouseTemp + "");
+                    if (b == 28 && p1Turn) {
+                        score[28].setText(fullHouseTemp + "");
+                    } else if (b == 45 && p2Turn) {
+                        score[44].setText(fullHouseTemp + "");
+                    }
                     endTurn(e);
                 }
                 if (b == 29 || b == 46) { //small straight
                     int smallStraightTemp;
                     smallStraightTemp = smallStraight();
-                    score[b].setText(smallStraightTemp + "");
+                    if (b == 29 && p1Turn) {
+                        score[29].setText(smallStraightTemp + "");
+                    } else if (b == 46 && p2Turn) {
+                        score[46].setText(smallStraightTemp + "");
+                    }
                     endTurn(e);
                 }
                 if(b==30||b==47) { //large straight
                     int largeStraightTemp;
                     largeStraightTemp = largeStraight();
-                    score[b].setText(largeStraightTemp + "");
+                    if (b == 30 && p1Turn) {
+                        score[30].setText(largeStraightTemp + "");
+                    } else if (b == 47 && p2Turn) {
+                        score[47].setText(largeStraightTemp + "");
+                    }
                     endTurn(e);
                 }
-                if (b >= 18 && b <= 23) { //ones through sixes
+                if (b >= 18 && b <= 23 && p1Turn) { //ones through sixes
                     int [] topScoreTemp;
                     topScoreTemp = topScores();
                     score[b].setText(topScoreTemp[b - 18] + "");
                     endTurn(e);
-                } else if (b >= 35 && b <= 40) {
+                } else if (b >= 35 && b <= 40 && p2Turn) {
                     int [] topScoreTemp;
                     topScoreTemp = topScores();
                     score[b].setText(topScoreTemp[b - 35] + "");
@@ -268,19 +296,19 @@ public int[] topScores() {
 	int[] topScore = new int [6];
 	int p1temp = 0;
 	int p2temp = 0;
-	for (int a = 0; a < 5; a++) {
-		for (int i = 0; i < 4; i++) {
+	for (int a = 0; a < 6; a++) {
+		for (int i = 0; i < 5; i++) {
 			if (p1DiceHandCurrentValue[i] == (a + 1)) {
-				p1temp = p1temp + a;
+				p1temp = p1temp + (a + 1);
 			}
 			if (p1HoldHandValue[i] == (a + 1)) {
-				p1temp = p1temp + a;
+				p1temp = p1temp + (a + 1);
 			}
 			if (p2DiceHandCurrentValue[i] == (a + 1)) {
-				p2temp = p2temp + a;
+				p2temp = p2temp + (a + 1);
 			}
 			if (p2HoldHandValue[i] == (a + 1)) {
-				p2temp = p2temp + a;
+				p2temp = p2temp + (a + 1);
 			}
 		}
 		if (p1Turn) {
