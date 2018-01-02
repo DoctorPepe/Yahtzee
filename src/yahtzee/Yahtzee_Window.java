@@ -203,7 +203,7 @@ public class Yahtzee_Window implements ActionListener, MouseListener {
         }
         for (int b=0; b < 51; b++) {
             if (e.getSource() == score[b] && b > 18 && b <= 50 && score[b].getText() == "") {
-                if (b == 31 || b == 48) { //for chance (this one will act as a sample for the rest.
+                if (b == 31 || b == 48) { //for chance (this one will act as a sample for the rest)
                     int chanceTemp;
                     chanceTemp = chance(); //call the method for that particular score category
                     score[b].setText(chanceTemp + ""); //set text
@@ -227,10 +227,33 @@ public class Yahtzee_Window implements ActionListener, MouseListener {
                     score[b].setText(fourKindTemp + "");
                     endTurn(e);
                 }
-                if (b == 28 || b == 45) {
+                if (b == 28 || b == 45) { //full house
                     int fullHouseTemp;
-                    fullHouseTemp = fourKind();
+                    fullHouseTemp = fullHouse();
                     score[b].setText(fullHouseTemp + "");
+                    endTurn(e);
+                }
+                if (b == 29 || b == 46) { //small straight
+                    int smallStraightTemp;
+                    smallStraightTemp = smallStraight();
+                    score[b].setText(smallStraightTemp + "");
+                    endTurn(e);
+                }
+                if(b==30||b==47) { //large straight
+                    int largeStraightTemp;
+                    largeStraightTemp = largeStraight();
+                    score[b].setText(largeStraightTemp + "");
+                    endTurn(e);
+                }
+                if (b >= 18 && b <= 23) { //ones through sixes
+                    int [] topScoreTemp;
+                    topScoreTemp = topScores();
+                    score[b].setText(topScoreTemp[b - 18] + "");
+                    endTurn(e);
+                } else if (b >= 35 && b <= 40) {
+                    int [] topScoreTemp;
+                    topScoreTemp = topScores();
+                    score[b].setText(topScoreTemp[b - 35] + "");
                     endTurn(e);
                 }
             }
@@ -245,26 +268,28 @@ public int[] topScores() {
 	int[] topScore = new int [6];
 	int p1temp = 0;
 	int p2temp = 0;
-	for (int a = 1; a <= 6; a++) {
-		for (int i = 0; i < 5; i++) {
-			if (p1DiceHandCurrentValue[i] == a) {
+	for (int a = 0; a < 5; a++) {
+		for (int i = 0; i < 4; i++) {
+			if (p1DiceHandCurrentValue[i] == (a + 1)) {
 				p1temp = p1temp + a;
 			}
-			if (p1HoldHandValue[i] == a) {
+			if (p1HoldHandValue[i] == (a + 1)) {
 				p1temp = p1temp + a;
 			}
-			if (p2DiceHandCurrentValue[i] == a) {
+			if (p2DiceHandCurrentValue[i] == (a + 1)) {
 				p2temp = p2temp + a;
 			}
-			if (p2HoldHandValue[i] == a) {
+			if (p2HoldHandValue[i] == (a + 1)) {
 				p2temp = p2temp + a;
 			}
 		}
 		if (p1Turn) {
-			topScore[a-1] = p1temp;
+			topScore[a] = p1temp;
 		} else if (p2Turn) {
-			topScore[a-1] = p2temp;
-		}
+			topScore[a] = p2temp;
+		} else {
+		    topScore[a] = 0;
+        }
 	}
 	return topScore;
 }
@@ -354,25 +379,25 @@ public int fourKind () {
 }
 public int fullHouse () {
 	int fullHouse = 0;
-	int[] tempTotal = new int[5];
-	for (int i= 1; i <= 6; i++) {
-		for (int a = 0; a <= 5; a++) {
+	int[] tempTotal = new int[6];
+	for (int a= 0; a < 5; a++) {
+		for (int i = 0; i < 4; i++) {
 			if (p1Turn) {
-				if (p1DiceHandCurrentValue[i] == a || p1HoldHandValue[i] == a) {
+				if (p1DiceHandCurrentValue[i] == (a + 1) || p1HoldHandValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
 			} else if (p2Turn) {
-				if (p2DiceHandCurrentValue[i] == a || p2HoldHandValue[i] == a) {
+				if (p2DiceHandCurrentValue[i] == (a + 1) || p2HoldHandValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
 			}
 		}
 	}
-	for (int b=1; b <= 5; b++) {
+	for (int b= 0; b < 5; b++) {
 		if (tempTotal[b] == 3) {
 			int temp = b;
-			for (int c=1; c <= 5; c++) {
-				if (tempTotal[c] != temp && tempTotal[c] == 3) {
+			for (int c=0; c < 5; c++) {
+				if (tempTotal[c] != temp && tempTotal[c] == 2) {
 					fullHouse = 25;
 				} else {
 				    fullHouse = 0;
@@ -385,10 +410,10 @@ public int fullHouse () {
 public int smallStraight () {
 	int smallStraight = 0;
 	int[] tempTotal = new int[6]; //temptotal is the number of each type of dice (i.e 3 ones)
-	for (int i= 1; i <= 6; i++) { //loop though all types of dice
-		for (int a = 0; a <= 5; a++) { //lopp though the current hand and hold hand for each player
+	for (int i= 0; i < 5; i++) { //loop though all types of dice
+		for (int a = 0; a < 4; a++) { //lopp though the current hand and hold hand for each player
 			if (p1Turn) {
-				if (p1DiceHandCurrentValue[a] == i || p1HoldHandValue[a] == i) {
+				if (p1DiceHandCurrentValue[a] == (i + 1) || p1HoldHandValue[a] == (i + 1)) {
 					tempTotal[i] = tempTotal[i] + 1;
 				}
 			} else if (p2Turn) {
@@ -412,14 +437,14 @@ public int smallStraight () {
 public int largeStraight () {
 		int largeStraight = 0;
 		int[] tempTotal = new int[6]; //temptotal is the number of each type of dice (i.e 3 ones)
-		for (int i= 1; i <= 6; i++) { //loop though all types of dice
-			for (int a = 0; a <= 5; a++) { //lopp though the current hand and hold hand for each player
+		for (int i= 0; i < 5; i++) { //loop though all types of dice
+			for (int a = 0; a < 4; a++) { //lopp though the current hand and hold hand for each player
 				if (p1Turn) {
-					if (p1DiceHandCurrentValue[a] == i || p1HoldHandValue[a] == i) {
+					if (p1DiceHandCurrentValue[a] == (i + 1) || p1HoldHandValue[a] == (i + 1)) {
 						tempTotal[i] = tempTotal[i] + 1;
 					}
 				} else if (p2Turn) {
-					if (p2DiceHandCurrentValue[a] == i || p2HoldHandValue[a] == i) {
+					if (p2DiceHandCurrentValue[a] == (i + 1) || p2HoldHandValue[a] == (i + 1)) {
 						tempTotal[i] = tempTotal[i] + 1;
 					}
 				}
