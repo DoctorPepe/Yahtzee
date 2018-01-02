@@ -51,7 +51,6 @@ public class Yahtzee_Window implements ActionListener, MouseListener {
 
     //scorePanel
     JLabel[] score = new JLabel[51];
-    boolean[] scoreOccupied = new boolean[51];
 
     public Yahtzee_Window() {
         //mainFrame
@@ -110,7 +109,6 @@ public class Yahtzee_Window implements ActionListener, MouseListener {
             }
             score[b].setBorder(BorderFactory.createLineBorder(Color.BLACK));
             scorePanel.add(score[b]);
-            scoreOccupied[b] = false;
         }
         score[1].setText("Ones");
         score[2].setText("Twos");
@@ -200,71 +198,15 @@ public class Yahtzee_Window implements ActionListener, MouseListener {
             }
         }
         for (int b=0; b < 51; b++) {
-            if (e.getSource() == score[b] && b > 18 && b <= 50 && !scoreOccupied[b]) {
-                if (b == 31 || b == 48) { //if player clicks on temp, then we execute the chance method
+            if (e.getSource() == score[b] && b > 18 && b <= 50 && score[b].getText() == "") {
+                if (b == 31 || b == 48) { //if player clicks on chance, then we execute the chance method
                     int chanceTemp;
                     chanceTemp = chance();
-                    System.out.print(chanceTemp);
                     score[b].setText(chanceTemp + "");
-                    scoreOccupied[b] = !scoreOccupied[b];
+                    endTurn(e);
                 }
             }
         }
-        for (int a = 0; a < 51; a++) {
-            if (e.getSource() == score[a] && p1Turn && a < 33) {
-                //code to end turn for only p1
-                turnCount = 3;
-                turnCounter.setText("Turns Left: " + turnCount + "");
-                p1Turn = !p1Turn;
-                p2Turn = !p2Turn;
-                if (p1Turn) {
-                    p1Title.setBorder(BorderFactory.createLineBorder(Color.RED));
-                    p2Title.setBorder(null);
-                } else if (p2Turn) {
-                    p2Title.setBorder(BorderFactory.createLineBorder(Color.RED));
-                    p1Title.setBorder(null);
-                }
-                for (int b = 0; b < 5; b++) {
-                    p1DiceHandCurrent[b].setIcon(new ImageIcon("src//images//Dice//Dice0.png"));
-                    p1DiceHandCurrentValue[b] = 0;
-                    p1HoldHand[b].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
-                    p1HoldHandValue[b] = 0;
-                    p1Holds[b] = false;
-
-                    p2DiceHandCurrent[b].setIcon(new ImageIcon("src//images//Dice//Dice0.png"));
-                    p2DiceHandCurrentValue[b] = 0;
-                    p2HoldHand[b].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
-                    p2HoldHandValue[b] = 0;
-                    p2Holds[b] = false;
-                }
-            } else if (e.getSource() == score[a] && p2Turn && a > 33) {
-				//code to end turn for only p2
-				turnCount = 3;
-				turnCounter.setText("Turns Left: " + turnCount + "");
-				p1Turn = !p1Turn;
-				p2Turn = !p2Turn;
-				if (p1Turn) {
-					p1Title.setBorder(BorderFactory.createLineBorder(Color.RED));
-					p2Title.setBorder(null);
-				} else if (p2Turn) {
-					p2Title.setBorder(BorderFactory.createLineBorder(Color.RED));
-					p1Title.setBorder(null);
-				}
-				for (int b = 0; b < 5; b++) {
-					p1DiceHandCurrent[b].setIcon(new ImageIcon("src//images//Dice//Dice0.png"));
-					p1DiceHandCurrentValue[b] = 0;
-					p1HoldHand[b].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
-					p1HoldHandValue[b] = 0;
-					p1Holds[b] = false;
-
-					p2DiceHandCurrent[b].setIcon(new ImageIcon("src//images//Dice//Dice0.png"));
-					p2DiceHandCurrentValue[b] = 0;
-					p2HoldHand[b].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
-					p2HoldHandValue[b] = 0;
-					p2Holds[b] = false;
-				}
-			}
-		}
 	}
 
 @Override
@@ -522,5 +464,62 @@ public int yahtzee () {
 		}
 	}
 	return yahtzeeTotal;
+}
+public void endTurn(MouseEvent e) {
+    for (int a = 0; a < 51; a++) {
+        if (e.getSource() == score[a] && p1Turn && a < 33) {
+            //code to end turn for only p1
+            turnCount = 3;
+            turnCounter.setText("Turns Left: " + turnCount + "");
+            p1Turn = !p1Turn;
+            p2Turn = !p2Turn;
+            if (p1Turn) {
+                p1Title.setBorder(BorderFactory.createLineBorder(Color.RED));
+                p2Title.setBorder(null);
+            } else if (p2Turn) {
+                p2Title.setBorder(BorderFactory.createLineBorder(Color.RED));
+                p1Title.setBorder(null);
+            }
+            for (int b = 0; b < 5; b++) {
+                p1DiceHandCurrent[b].setIcon(new ImageIcon("src//images//Dice//Dice0.png"));
+                p1DiceHandCurrentValue[b] = 0;
+                p1HoldHand[b].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
+                p1HoldHandValue[b] = 0;
+                p1Holds[b] = false;
+
+                p2DiceHandCurrent[b].setIcon(new ImageIcon("src//images//Dice//Dice0.png"));
+                p2DiceHandCurrentValue[b] = 0;
+                p2HoldHand[b].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
+                p2HoldHandValue[b] = 0;
+                p2Holds[b] = false;
+            }
+        } else if (e.getSource() == score[a] && p2Turn && a > 33) {
+            //code to end turn for only p2
+            turnCount = 3;
+            turnCounter.setText("Turns Left: " + turnCount + "");
+            p1Turn = !p1Turn;
+            p2Turn = !p2Turn;
+            if (p1Turn) {
+                p1Title.setBorder(BorderFactory.createLineBorder(Color.RED));
+                p2Title.setBorder(null);
+            } else if (p2Turn) {
+                p2Title.setBorder(BorderFactory.createLineBorder(Color.RED));
+                p1Title.setBorder(null);
+            }
+            for (int b = 0; b < 5; b++) {
+                p1DiceHandCurrent[b].setIcon(new ImageIcon("src//images//Dice//Dice0.png"));
+                p1DiceHandCurrentValue[b] = 0;
+                p1HoldHand[b].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
+                p1HoldHandValue[b] = 0;
+                p1Holds[b] = false;
+
+                p2DiceHandCurrent[b].setIcon(new ImageIcon("src//images//Dice//Dice0.png"));
+                p2DiceHandCurrentValue[b] = 0;
+                p2HoldHand[b].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
+                p2HoldHandValue[b] = 0;
+                p2Holds[b] = false;
+            }
+        }
+    }
 }
 }
