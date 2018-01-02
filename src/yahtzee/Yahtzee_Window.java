@@ -177,32 +177,60 @@ public class Yahtzee_Window implements ActionListener, MouseListener {
                 p1HoldHand[a].setIcon(new ImageIcon("src//images//Dice//Dice" + p1DiceHandCurrentValue[a] + ".png"));
                 p1DiceHandCurrent[a].setIcon(new ImageIcon("src//images//Dice//Dice//Dice0.png"));
                 p1HoldHandValue[a] = p1DiceHandCurrentValue[a];
+                p1DiceHandCurrentValue[a] = 0;
             }
             if (e.getSource() == p2DiceHandCurrent[a] && !p2Holds[a] && p2Turn) {
                 p2Holds[a] = !p2Holds[a];
                 p2HoldHand[a].setIcon(new ImageIcon("src//images//Dice//Dice" + p2DiceHandCurrentValue[a] + ".png"));
                 p2DiceHandCurrent[a].setIcon(new ImageIcon("src//images//Dice//Dice//Dice0.png"));
                 p2HoldHandValue[a] = p2DiceHandCurrentValue[a];
+                p2DiceHandCurrentValue[a] = 0;
             }
             if (e.getSource() == p1HoldHand[a] && p1Holds[a] && p1Turn) {
                 p1Holds[a] = !p1Holds[a];
                 p1DiceHandCurrent[a].setIcon(new ImageIcon("src//images//Dice//Dice" + p1HoldHandValue[a] + ".png"));
                 p1HoldHand[a].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
                 p1DiceHandCurrentValue[a] = p1HoldHandValue[a];
+                p1HoldHandValue[a] = 0;
             }
             if (e.getSource() == p2HoldHand[a] && p2Holds[a] && p2Turn) {
                 p2Holds[a] = !p2Holds[a];
                 p2DiceHandCurrent[a].setIcon(new ImageIcon("src//images//Dice//Dice" + p2HoldHandValue[a] + ".png"));
                 p2HoldHand[a].setIcon(new ImageIcon("src//images//Dice//DiceHold.png"));
                 p2DiceHandCurrentValue[a] = p2HoldHandValue[a];
+                p2HoldHandValue[a] = 0;
             }
         }
         for (int b=0; b < 51; b++) {
             if (e.getSource() == score[b] && b > 18 && b <= 50 && score[b].getText() == "") {
-                if (b == 31 || b == 48) { //if player clicks on chance, then we execute the chance method
+                if (b == 31 || b == 48) { //for chance (this one will act as a sample for the rest.
                     int chanceTemp;
-                    chanceTemp = chance();
-                    score[b].setText(chanceTemp + "");
+                    chanceTemp = chance(); //call the method for that particular score category
+                    score[b].setText(chanceTemp + ""); //set text
+                    endTurn(e); //end turn
+                }
+                if (b == 32 || b == 49) { //yahtzee
+                	int yahtzeeTemp;
+                	yahtzeeTemp = yahtzee();
+                	score[b].setText(yahtzeeTemp + "");
+                	endTurn(e);
+				}
+				if (b == 26 || b ==	43) { //three of a kind
+                	int threeKindTemp;
+                	threeKindTemp = threeKind();
+                	score[b].setText(threeKindTemp + "");
+                	endTurn(e);
+				}
+				if (b == 27 || b == 44) { //four of a kind
+                    int fourKindTemp;
+                    fourKindTemp = fourKind();
+                    score[b].setText(fourKindTemp + "");
+                    endTurn(e);
+                }
+                if (b == 28 || b == 45) {
+                    int fullHouseTemp;
+                    fullHouseTemp = fourKind();
+                    score[b].setText(fullHouseTemp + "");
                     endTurn(e);
                 }
             }
@@ -242,16 +270,14 @@ public int[] topScores() {
 }
 public int threeKind () {
 	int threeOfAKind = 0;
-	int p1temp = 0;
-	int p2temp = 0;
-	int[] tempTotal = new int[5];
+	int[] tempTotal = new int[6];
 	if (p1Turn) {
-		for (int a=1; a <= 6; a++) {
+		for (int a=0; a < 6; a++) {
 			for (int i=0; i < 5; i++) {
-				if (p1DiceHandCurrentValue[i] == a) {
+				if (p1DiceHandCurrentValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
-				if (p1HoldHandValue[i] == a) {
+				if (p1HoldHandValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
 			}
@@ -259,18 +285,17 @@ public int threeKind () {
 		for (int b=0; b<5; b++) {
 			if (tempTotal[b] >= 3) {
 				for (int c=0; c<5; c++) {
-					p1temp = p1temp + p1DiceHandCurrentValue[c] + p1HoldHandValue[c];
-					threeOfAKind = threeOfAKind + p1temp;
+					threeOfAKind = threeOfAKind + p1DiceHandCurrentValue[c] + p1HoldHandValue[c];
 				}
 			}
 		}
 	} else if (p2Turn) {
-		for (int a=1; a <= 6; a++) {
+		for (int a=1; a < 6; a++) {
 			for (int i=0; i < 5; i++) {
-				if (p2DiceHandCurrentValue[i] == a) {
+				if (p2DiceHandCurrentValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
-				if (p2HoldHandValue[i] == a) {
+				if (p2HoldHandValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
 			}
@@ -278,59 +303,54 @@ public int threeKind () {
 		for (int b=0; b<5; b++) {
 			if (tempTotal[b] >= 3) {
 				for (int c=0; c<5; c++) {
-					p2temp = p2temp + p2DiceHandCurrentValue[c] + p2HoldHandValue[c];
-					threeOfAKind = threeOfAKind + p2temp;
+					threeOfAKind = threeOfAKind + p2DiceHandCurrentValue[c] + p2HoldHandValue[c];
 				}
 			}
 		}
 	}
 	return threeOfAKind;
 }
-public int FourKind () {
-	int FourOfAKind = 0;
-	int p1temp = 0;
-	int p2temp = 0;
-	int[] tempTotal = new int[5];
-	if (p1Turn) {
-		for (int a=1; a <= 6; a++) {
-			for (int i=0; i < 5; i++) {
-				if (p1DiceHandCurrentValue[i] == a) {
-					tempTotal[a] = tempTotal[a] + 1;
-				}
-				if (p1HoldHandValue[i] == a) {
-					tempTotal[a] = tempTotal[a] + 1;
-				}
-			}
-		}
-		for (int b=0; b<5; b++) {
-			if (tempTotal[b] >= 4) {
-				for (int c=0; c<5; c++) {
-					p1temp = p1temp + p1DiceHandCurrentValue[c] + p1HoldHandValue[c];
-					FourOfAKind = FourOfAKind + p1temp;
-				}
-			}
-		}
-	} else if (p2Turn) {
-		for (int a=1; a <= 6; a++) {
-			for (int i=0; i < 5; i++) {
-				if (p2DiceHandCurrentValue[i] == a) {
-					tempTotal[a] = tempTotal[a] + 1;
-				}
-				if (p2HoldHandValue[i] == a) {
-					tempTotal[a] = tempTotal[a] + 1;
-				}
-			}
-		}
-		for (int b=0; b<5; b++) {
-			if (tempTotal[b] >= 4) {
-				for (int c=0; c<5; c++) {
-					p2temp = p2temp + p2DiceHandCurrentValue[c] + p2HoldHandValue[c];
-					FourOfAKind = FourOfAKind + p2temp;
-				}
-			}
-		}
-	}
-	return FourOfAKind;
+public int fourKind () {
+    int fourOfAKind = 0;
+    int[] tempTotal = new int[6];
+    if (p1Turn) {
+        for (int a=0; a < 6; a++) {
+            for (int i=0; i < 5; i++) {
+                if (p1DiceHandCurrentValue[i] == (a + 1)) {
+                    tempTotal[a] = tempTotal[a] + 1;
+                }
+                if (p1HoldHandValue[i] == (a + 1)) {
+                    tempTotal[a] = tempTotal[a] + 1;
+                }
+            }
+        }
+        for (int b=0; b<5; b++) {
+            if (tempTotal[b] >= 3) {
+                for (int c=0; c<5; c++) {
+                    fourOfAKind = fourOfAKind + p1DiceHandCurrentValue[c] + p1HoldHandValue[c];
+                }
+            }
+        }
+    } else if (p2Turn) {
+        for (int a=1; a < 6; a++) {
+            for (int i=0; i < 5; i++) {
+                if (p2DiceHandCurrentValue[i] == (a + 1)) {
+                    tempTotal[a] = tempTotal[a] + 1;
+                }
+                if (p2HoldHandValue[i] == (a + 1)) {
+                    tempTotal[a] = tempTotal[a] + 1;
+                }
+            }
+        }
+        for (int b=0; b<5; b++) {
+            if (tempTotal[b] >= 3) {
+                for (int c=0; c<5; c++) {
+                    fourOfAKind = fourOfAKind + p2DiceHandCurrentValue[c] + p2HoldHandValue[c];
+                }
+            }
+        }
+    }
+    return fourOfAKind;
 }
 public int fullHouse () {
 	int fullHouse = 0;
@@ -354,7 +374,9 @@ public int fullHouse () {
 			for (int c=1; c <= 5; c++) {
 				if (tempTotal[c] != temp && tempTotal[c] == 3) {
 					fullHouse = 25;
-				}
+				} else {
+				    fullHouse = 0;
+                }
 			}
 		}
 	}
@@ -429,38 +451,42 @@ public int chance () {
 }
 public int yahtzee () {
 	int yahtzeeTotal = 0;
-	int[] tempTotal = new int[5];
+	int[] tempTotal = new int[6];
 	if (p1Turn) {
-		for (int a=1; a <= 6; a++) {
-			for (int i=0; i < 5; i++) {
-				if (p1DiceHandCurrentValue[i] == a) {
+		for (int a=0; a < 6 ; a++) { //these are the possible values of the dice + 1
+			for (int i=0; i < 5; i++) { //these are all of the dice currently in play
+				if (p1DiceHandCurrentValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
-				if (p1HoldHandValue[i] == a) {
+				if (p1HoldHandValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
 			}
 		}
-		for (int b=0; b<5; b++) {
+		for (int b=0; b < 6; b++) {
 			if (tempTotal[b] == 5) {
 				yahtzeeTotal = 50;
+			} else {
+				yahtzeeTotal = 0;
 			}
 		}
-	} else if (p2Turn) {
-		for (int a=1; a <= 6; a++) {
+	} else if (p2Turn) { //this is the same section as before but for player 2
+		for (int a=0; a < 6; a++) {
 			for (int i=0; i < 5; i++) {
-				if (p2DiceHandCurrentValue[i] == a) {
+				if (p2DiceHandCurrentValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
-				if (p2HoldHandValue[i] == a) {
+				if (p2HoldHandValue[i] == (a + 1)) {
 					tempTotal[a] = tempTotal[a] + 1;
 				}
 			}
 		}
 	}
-	for (int b=0; b<5; b++) {
+	for (int b=0; b < 6; b++) {
 		if (tempTotal[b] == 5) {
 			yahtzeeTotal = 50;
+		} else {
+			yahtzeeTotal = 0;
 		}
 	}
 	return yahtzeeTotal;
