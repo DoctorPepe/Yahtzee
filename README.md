@@ -1,4 +1,4 @@
-# Yahtzee Gam
+# Yahtzee Game
 Basic Yahtzee game developed in Java as a computer science project.
 
 This project is an exersize in the use of GitHub and Java. Issues are written as reminders for myself, if I ever wish to come back to it and polish it up. 
